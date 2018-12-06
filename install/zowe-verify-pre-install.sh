@@ -1,11 +1,23 @@
 #!/bin/sh
+
+################################################################################
+# This program and the accompanying materials are made available under the terms of the
+# Eclipse Public License v2.0 which accompanies this distribution, and is available at
+# https://www.eclipse.org/legal/epl-v20.html
+#
+# SPDX-License-Identifier: EPL-2.0
+#
+# Copyright IBM Corporation 2018
+################################################################################
+
 # Verify that the Zowe pre-reqs are in place before you install Zowe on z/OS
 # Note:  This script does not change anything on your system.
 
 # Testing:  You must set these variables before you run this script:
-# INSTALL_DIR=/u/tstradm/zowe/zowe-0.9.0       # this is the test location for testing this script on MV3B.  Remove this line before shipping.  
-
-# Run this script AFTER you un-PAX the Zowe PAX file.
+# ZOWE_INSTALL_DIR={root directory of where zowe was unpax'd}       
+# For example, if you unpax'd zowe-n.n.n.pax in /u/myuser you would have a subdirectory
+# called /u/myuser/zowe-n.n.n.   Set this environment variable to
+# ZOWE_INSTALL_DIR=/u/myuser/zowe-n.n.n 
 
 # Assume this script is invoked from the 'install' directory.  
 #
@@ -14,23 +26,23 @@
 echo Script zowe-verify-pre-install.sh started
 
 # This script is expected to be located in 'install' directory
-# otherwise you must set INSTALL_DIR to the Zowe install directory before you run this script
-# e.g. export INSTALL_DIR=/u/tstradm/zowe/zowe-0.9.0/install
+# otherwise you must set ZOWE_INSTALL to the Zowe install directory before you run this script
+# e.g. export ZOWE_INSTALL=/u/tstradm/zowe/zowe-0.9.0/install
 
-if [[ -n "${INSTALL_DIR}" ]]
+if [[ -n "${ZOWE_INSTALL_DIR}" ]]
 then 
-    echo Info: INSTALL_DIR environment variable is set to ${INSTALL_DIR}
+    echo Info: ZOWE_INSTALL_DIR environment variable is set to ${ZOWE_INSTALL_DIR}
 else 
-    echo Info: INSTALL_DIR environment variable is empty
+    echo Info: ZOWE_INSTALL_DIR environment variable is empty
     if [[ `basename $PWD` != install ]]
     then
         echo Warning: You are not in the \'install\' directory
-        echo Warning: '${INSTALL_DIR} is not set'
-        echo Warning: '${INSTALL_DIR} must be set to the Zowe install directory'
+        echo Warning: '${ZOWE_INSTALL_DIR} is not set'
+        echo Warning: '${ZOWE_INSTALL_DIR} must be set to the Zowe install directory'
         echo Warning: script will run, but with errors
     else
-        INSTALL_DIR=`pwd`
-        echo Info: INSTALL_DIR environment variable is now set to ${INSTALL_DIR}
+        ZOWE_INSTALL_DIR=`pwd`
+        echo Info: ZOWE_INSTALL_DIR environment variable is now set to ${ZOWE_INSTALL_DIR}
     fi    
 fi
 
@@ -39,10 +51,10 @@ echo Check entries in the install directory
 instdirOK=1
 for dir in files install licenses log scripts
 do
-  ls ${INSTALL_DIR}/../$dir >/dev/null
+  ls ${ZOWE_INSTALL_DIR}/../$dir >/dev/null
   if [[ $? -ne 0 ]]
   then
-    echo Error: directory \"$dir\" not found in ${INSTALL_DIR}/..
+    echo Error: directory \"$dir\" not found in ${ZOWE_INSTALL_DIR}/..
     instdirOK=0
   fi
 done
@@ -106,11 +118,11 @@ fi
 
 echo
 echo Is opercmd available?
-${INSTALL_DIR}/../scripts/opercmd "d t" 1> /dev/null 2> /dev/null  # is 'opercmd' available and working?
+${ZOWE_INSTALL_DIR}/../scripts/opercmd "d t" 1> /dev/null 2> /dev/null  # is 'opercmd' available and working?
 if [[ $? -ne 0 ]]
 then
   echo Error: Unable to run opercmd REXX exec from # >> $LOG_FILE
-  ls -l ${INSTALL_DIR}/../scripts/opercmd # try to list opercmd
+  ls -l ${ZOWE_INSTALL_DIR}/../scripts/opercmd # try to list opercmd
   echo Warning: z/OS release will not be checked
 else
 # use opercmd
@@ -119,7 +131,7 @@ else
   echo OK: opercmd is available
   echo
   echo Check z/OS RELEASE
-  release=`${INSTALL_DIR}/../scripts/opercmd 'd iplinfo'|grep RELEASE`
+  release=`${ZOWE_INSTALL_DIR}/../scripts/opercmd 'd iplinfo'|grep RELEASE`
   # the selected line will look like this ...
   # RELEASE z/OS 02.03.00    LICENSE = z/OS
   
@@ -275,7 +287,7 @@ fi
 # 3. Ports are available
 echo
 echo Check the ports in the yaml file are not already in use
-portList=`sed -n 's/.*\(Port=\)\([0-9]*\)/\2/p' ${INSTALL_DIR}/zowe-install.yaml`
+portList=`sed -n 's/.*\(Port=\)\([0-9]*\)/\2/p' ${ZOWE_INSTALL_DIR}/zowe-install.yaml`
 portsOK=1
 for port in $portList 
 do
@@ -481,7 +493,7 @@ echo
 echo
 echo Check the USS AUTOCVT
 
-${INSTALL_DIR}/../scripts/opercmd "D OMVS,o" | grep "AUTOCVT *= OFF" > /dev/null
+${ZOWE_INSTALL_DIR}/../scripts/opercmd "D OMVS,o" | grep "AUTOCVT *= OFF" > /dev/null
 if [[ $? -ne 0 ]]
 then
   echo Warning:  OMVS AUTOCVT is not set to OFF.  Files may appear in wrong code page.
@@ -497,5 +509,3 @@ fi
 
 echo
 echo Script zowe-verify-pre-install.sh ended
-
-
