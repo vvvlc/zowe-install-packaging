@@ -50,6 +50,6 @@
       "target": "pax-workspace/content/zowe-{ZOWE_VERSION}/files/",
       "explode": "true",
       "flat": "true"
-    },
+    }
   ]
 }
