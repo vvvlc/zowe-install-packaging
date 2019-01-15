@@ -168,7 +168,7 @@ services:
       - apiId: com.ibm.datasets
         gatewayUrl: api/v1
         version: 0.9.3
-        documentationUrl: https://$ZOWE_EXPLORER_HOST:$ZOWE_EXPLORER_SERVER_DATASETS_PORT/swagger-ui.html
+        swaggerUrl: https://$ZOWE_EXPLORER_HOST:$ZOWE_EXPLORER_SERVER_DATASETS_PORT/v2/api-docs
   - serviceId: explorer-mvs
     title: IBM z/OS MVS Explorer UI
     description: IBM z/OS MVS Explorer UI service
@@ -204,7 +204,7 @@ services:
       - apiId: com.ibm.jobs
         gatewayUrl: api/v1
         version: 0.9.3
-        documentationUrl: https://$ZOWE_EXPLORER_HOST:$ZOWE_EXPLORER_SERVER_JOBS_PORT/swagger-ui.html
+        swaggerUrl: https://$ZOWE_EXPLORER_HOST:$ZOWE_EXPLORER_SERVER_JOBS_PORT/v2/api-docs
   - serviceId: explorer-jes
     title: IBM z/OS Jobs UI
     description: IBM z/OS Jobs UI service
@@ -237,32 +237,6 @@ services:
         serviceRelativeUrl: ui/v1/explorer-uss
 EOF
 iconv -f IBM-1047 -t IBM-850 $TEMP_DIR/uss.yml > $STATIC_DEF_CONFIG/uss.yml	
-
-# Add static definition for zos
-cat <<EOF >$TEMP_DIR/zos.yml
-#
-services:
-    - serviceId: zos
-      title: IBM z/OS miscellaneous
-      description: IBM z/OS Miscellaneous REST API service
-      catalogUiTileId: zos
-      instanceBaseUrls:
-        - https://$ZOWE_EXPLORER_HOST:$ZOWE_EXPLORER_SERVER_HTTPS_PORT/
-      homePageRelativeUrl:  # Home page is at the same URL
-      routedServices:
-        - gatewayUrl: api/v1  # [api/ui/ws]/v{majorVersion}
-          serviceRelativeUrl: api/v1/zos
-      apiInfo:
-        - apiId: com.ibm.zos
-          gatewayUrl: api/v1
-          version: 0.9.3
-          documentationUrl: https://$ZOWE_EXPLORER_HOST:$ZOWE_EXPLORER_SERVER_HTTPS_PORT/ibm/api/explorer/
-catalogUiTiles:
-    zos:
-        title: z/OS Miscellaneous services
-        description: IBM z/OS Miscellaneous REST services
-EOF
-iconv -f IBM-1047 -t IBM-850 $TEMP_DIR/zos.yml > $STATIC_DEF_CONFIG/zos.yml	
 
 chmod -R 777 $STATIC_DEF_CONFIG
 
