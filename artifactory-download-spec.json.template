@@ -22,7 +22,7 @@
       "explode": "true"
     },
     {
-      "pattern": "libs-release-local/org/zowe/explorer-jes/0.0.*/explorer-jes-0.0.*.pax",
+      "pattern": "libs-snapshot-local/org/zowe/explorer-jes/0.0.12-TEST-X-FRAME-OPTS-UI-SERVER/explorer-jes-0.0.12-snapshot.20190213144932-test-x-frame-opts-ui-server.pax",
       "target": "pax-workspace/content/zowe-{ZOWE_VERSION}/files/",
       "flat": "true",
       "sortBy": ["created"],
