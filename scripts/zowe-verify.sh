@@ -16,6 +16,9 @@
 echo Script zowe-verify.sh started
 echo
 
+#disabled autocvt
+. `dirname $0`/internal/zowe-disable-autocvt.sh
+
 # This script is expected to be located in ${ZOWE_ROOT_DIR}/scripts,
 # otherwise you must set ZOWE_ROOT_DIR to where the Zowe runtime is installed before you run this script
 # e.g. export ZOWE_ROOT_DIR=/u/userid/zowe/1.0.0       

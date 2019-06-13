@@ -11,6 +11,8 @@
 ################################################################################
 
 INSTALL_DIR=$PWD/..
+# disable all autoconversions
+. $INSTALL_DIR/scripts/zowe-disable-autocvt.sh
 SCRIPT_DIR=${INSTALL_DIR}/scripts/zss
 
 ZSS=${INSTALL_DIR}/files/zss

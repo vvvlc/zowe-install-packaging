@@ -45,6 +45,9 @@ else
     fi    
 fi
 
+# disable all autoconversions
+. $INSTALL_DIR/../scripts/zowe-disable-autocvt.sh
+
 echo
 echo Check entries in the install directory
 instdirOK=1

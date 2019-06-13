@@ -15,6 +15,9 @@
 export PROFILE=.profile
 export INSTALL_DIR=$PWD/../
 
+# disable all autoconversions
+. $INSTALL_DIR/scripts/zowe-disable-autocvt.sh
+
 # extract Zowe version from manifest.json
 export ZOWE_VERSION=$(cat $INSTALL_DIR/manifest.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | tr -d '[[:space:]]')
 
@@ -186,6 +189,7 @@ cd $INSTALL_DIR/scripts
 sed 's/ZOWESVR/'$ZOWE_SERVER_PROCLIB_MEMBER'/' $INSTALL_DIR/scripts/zowe-start.sh > $ZOWE_ROOT_DIR/scripts/zowe-start.sh
 sed 's/ZOWESVR/'$ZOWE_SERVER_PROCLIB_MEMBER'/' $INSTALL_DIR/scripts/zowe-stop.sh > $ZOWE_ROOT_DIR/scripts/zowe-stop.sh
 cp $INSTALL_DIR/scripts/zowe-verify.sh $ZOWE_ROOT_DIR/scripts/zowe-verify.sh
+
 chmod -R 777 $ZOWE_ROOT_DIR/scripts
 
 mkdir $ZOWE_ROOT_DIR/scripts/internal
@@ -196,6 +200,7 @@ cp $INSTALL_DIR/scripts/opercmd $ZOWE_ROOT_DIR/scripts/internal/opercmd
 echo "Copying the run-zowe.sh into "$ZOWE_ROOT_DIR/scripts/internal >> $LOG_FILE
 sed -e 's|$nodehome|'$NODE_HOME'|' $INSTALL_DIR/scripts/run-zowe.sh  > $TEMP_DIR/run-zowe.sh
 cp $TEMP_DIR/run-zowe.sh $ZOWE_ROOT_DIR/scripts/internal/run-zowe.sh
+cp $INSTALL_DIR/scripts/zowe-disable-autocvt.sh $ZOWE_ROOT_DIR/scripts/internal/zowe-disable-autocvt.sh
 chmod -R 755 $ZOWE_ROOT_DIR/scripts/internal
 
 sed -e 's|/zowe/install/path|'$ZOWE_ROOT_DIR'|' $INSTALL_DIR/files/templates/ZOWESVR.jcl > $TEMP_DIR/ZOWESVR.jcl

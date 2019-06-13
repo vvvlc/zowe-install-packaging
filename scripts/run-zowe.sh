@@ -17,6 +17,7 @@
 # //  PARM='PGM /bin/sh &SRVRPATH/scripts/internal/run-zowe.sh'
 #
 #
+. `dirname $0`/zowe-disable-autocvt.sh
 #export "NODE_PATH='"$ZOWE_ROOT_DIR"/zlux-app-server/bin':$NODE_PATH"
 if [[ ! -f $NODE_HOME/"./bin/node" ]]
 then
